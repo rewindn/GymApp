@@ -1,6 +1,7 @@
 package com.example.gymapp
 
 
+import android.R
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
@@ -37,7 +39,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gymapp.ui.theme.GymAppTheme
@@ -120,11 +124,47 @@ fun ImGoodNowButton(){
 }
 
 
+
+@Composable
+fun StartHeader(){
+    Row(
+        modifier = Modifier
+            .background(Color.Black)
+         
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+
+
+        ) {
+            Text(
+                "Start",
+                color = Color.White,
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(end = 300.dp)
+
+
+            )
+            Icon(
+                imageVector = Icons.Filled.Settings,
+                tint = Color.White,
+                contentDescription = "setting",
+                modifier = Modifier.size(24.dp)
+
+        )
+        }
+
+    }
+
+}
+
+
 @Preview(showBackground = true)
 @Composable
 fun AfterSessionCardPreview() {
     GymAppTheme {
-
-        NavigationButton()
+        StartHeader()
     }
 }
