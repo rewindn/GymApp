@@ -119,7 +119,23 @@ fun ImGoodNowButton(){
     }
 }
 
-
+@Composable
+fun PlayButton(){
+    Button(
+        onClick = {},
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        modifier = Modifier
+            .background(Color.Black)
+            .padding(10.dp)
+    ){
+  Icon(
+            imageVector = Icons.Filled.PlayArrow,
+            tint = Color.Black,
+            contentDescription = "play",
+            modifier = Modifier.size(46.dp)
+        )
+    }
+}
 
 @Composable
 fun StartHeader(){
@@ -322,6 +338,6 @@ fun WorkoutItem(){
 @Composable
 fun AfterSessionCardPreview() {
     GymAppTheme {
-        WorkoutItem()
+        PlayButton()
     }
 }
