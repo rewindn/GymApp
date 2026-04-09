@@ -18,10 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
@@ -95,7 +92,7 @@ fun NavigationButton(){
             modifier = Modifier.size(46.dp)
 
         )
-        Spacer(Modifier.size(53.dp,))
+        Spacer(Modifier.size(53.dp))
         Icon(
             imageVector = Icons.Outlined.Edit,
             tint = Color.White,
@@ -173,7 +170,7 @@ fun BackHeader(){
 
         ) {
                 Icon(
-                imageVector = Icons.Filled.KeyboardArrowLeft,
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                 tint = Color.White,
                 contentDescription = "setting",
                 modifier = Modifier
@@ -205,7 +202,7 @@ fun PlayingNowHeader(){
             .background(Color.Black)
 
     ) {
-       Column() {
+       Column {
            Text("Playing Now",
                color = Color.White,
                fontSize = 16.sp,
@@ -234,7 +231,7 @@ fun PlayingNowHeader(){
 }
 
 @Composable
-fun WorkoutItem(){
+fun WorkoutQueueItem(){
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -249,7 +246,7 @@ fun WorkoutItem(){
                 .size(54.dp)
                 .padding(end = 16.dp)
         )
-       Column() {
+       Column {
            Text(
             "Chest Press",
             color = Color.White,
@@ -270,10 +267,53 @@ fun WorkoutItem(){
         Icon(
             imageVector = Icons.Filled.Menu,
             tint = Color.White,
-            contentDescription = "setting",
+            contentDescription = "toggle queue",
             modifier = Modifier.size(24.dp)
 
     )
+    }
+
+}
+@Composable
+fun WorkoutItem(){
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .background(Color.Black)
+
+    ) {
+        Image(
+            painter = painterResource(R.drawable.wo_img_upper),
+            contentDescription = "Workout Image",
+            modifier = Modifier
+                .size(54.dp)
+                .padding(end = 16.dp)
+        )
+       Column {
+           Text(
+            "Chest Press",
+            color = Color.White,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(end = 150.dp)
+        )
+           Text(
+               "Upper Body",
+               color = Color.White,
+               fontSize = 16.sp,
+               fontWeight = FontWeight.Light
+           )
+
+
+       }
+
+         Text(
+            "8set",
+            color = Color.White,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+        )
     }
 
 }
@@ -282,6 +322,6 @@ fun WorkoutItem(){
 @Composable
 fun AfterSessionCardPreview() {
     GymAppTheme {
-        BackHeader()
+        WorkoutItem()
     }
 }
