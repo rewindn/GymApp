@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Menu
@@ -101,7 +102,36 @@ fun NavigationButton(){
         )
 }
 }
-
+@Composable
+fun ProgressBar(){
+    Button(
+        onClick = {},
+        colors = ButtonDefaults.buttonColors(containerColor = Color(60,60,60)),
+    ) {
+     Image(
+            painter = painterResource(R.drawable.wo_img_upper),
+            contentDescription = "Workout Image",
+            modifier = Modifier
+                .size(54.dp)
+                .padding(end = 16.dp)
+        )
+          Column {
+           Text("Playing Now",
+               color = Color.White,
+               fontSize = 12.sp,
+               fontWeight = FontWeight.Light
+           )
+        Text(
+            "Upper Body",
+            color = Color.White,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .width(300.dp)
+        )
+       }
+}
+}
 @Composable
 fun ImGoodNowButton(){
     Button(
@@ -338,6 +368,6 @@ fun WorkoutItem(){
 @Composable
 fun AfterSessionCardPreview() {
     GymAppTheme {
-        PlayButton()
+        ProgressBar()
     }
 }
