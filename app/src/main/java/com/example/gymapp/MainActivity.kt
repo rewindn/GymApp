@@ -159,12 +159,48 @@ fun StartHeader(){
     }
 
 }
+@Composable
+fun PlayingNowHeader(){
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .background(Color.Black)
+
+    ) {
+       Column() {
+           Text("Playing Now",
+               color = Color.White,
+               fontSize = 16.sp,
+               fontWeight = FontWeight.Light
+           )
+        Text(
+            "Upper Body",
+            color = Color.White,
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(end = 200.dp)
+        )
+       }
+
+
+
+        Icon(
+            imageVector = Icons.Filled.Settings,
+            tint = Color.White,
+            contentDescription = "setting",
+            modifier = Modifier.size(24.dp)
+
+    )
+    }
+
+}
 
 
 @Preview(showBackground = true)
 @Composable
 fun AfterSessionCardPreview() {
     GymAppTheme {
-        StartHeader()
+        PlayingNowHeader()
     }
 }
