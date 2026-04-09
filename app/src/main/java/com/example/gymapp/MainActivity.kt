@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Menu
@@ -31,11 +33,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -130,6 +134,33 @@ fun ProgressBar(){
                 .width(300.dp)
         )
        }
+}
+}
+@Composable
+fun LongPressQueueItem(){
+    Button(
+        onClick = {},
+        colors = ButtonDefaults.buttonColors(containerColor = Color(95,95,95)),
+        shape = RoundedCornerShape(14.dp),
+
+
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.baseline_queue_24),
+            tint = Color.White,
+            contentDescription = "play",
+            modifier = Modifier.padding(end = 16.dp)
+        )
+        Text(
+            "Add To Queue",
+            color = Color.White,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .width(300.dp)
+                .padding(vertical = 38.dp)
+
+        )
 }
 }
 @Composable
@@ -368,6 +399,6 @@ fun WorkoutItem(){
 @Composable
 fun AfterSessionCardPreview() {
     GymAppTheme {
-        ProgressBar()
+        LongPressQueueItem()
     }
 }
