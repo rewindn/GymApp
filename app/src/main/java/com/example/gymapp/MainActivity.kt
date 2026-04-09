@@ -18,6 +18,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Edit
@@ -153,6 +158,44 @@ fun StartHeader(){
     }
 
 }
+
+@Composable
+fun BackHeader(){
+    Row(
+        modifier = Modifier
+            .background(Color.Black)
+
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+
+
+        ) {
+                Icon(
+                imageVector = Icons.Filled.KeyboardArrowLeft,
+                tint = Color.White,
+                contentDescription = "setting",
+                modifier = Modifier
+                    .padding(end = 300.dp)
+                    .size(24.dp)
+
+
+
+
+            )
+            Icon(
+                imageVector = Icons.Filled.Settings,
+                tint = Color.White,
+                contentDescription = "setting",
+                modifier = Modifier.size(24.dp)
+
+        )
+        }
+
+    }
+
+}
 @Composable
 fun PlayingNowHeader(){
     Row(
@@ -224,10 +267,8 @@ fun WorkoutItem(){
 
        }
 
-
-
         Icon(
-            imageVector = Icons.Filled.Settings,
+            imageVector = Icons.Filled.Menu,
             tint = Color.White,
             contentDescription = "setting",
             modifier = Modifier.size(24.dp)
@@ -241,6 +282,6 @@ fun WorkoutItem(){
 @Composable
 fun AfterSessionCardPreview() {
     GymAppTheme {
-        WorkoutItem()
+        BackHeader()
     }
 }
