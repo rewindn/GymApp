@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
@@ -145,7 +146,7 @@ fun LongPressQueueItem(){
         Icon(
             painter = painterResource(R.drawable.baseline_queue_24),
             tint = Color.White,
-            contentDescription = "play",
+            contentDescription = "add to queue",
             modifier = Modifier.padding(end = 16.dp)
         )
         Text(
@@ -160,6 +161,35 @@ fun LongPressQueueItem(){
         )
 }
 }
+
+@Composable
+fun LongPressEditItem(){
+    Button(
+        onClick = {},
+        colors = ButtonDefaults.buttonColors(containerColor = Color(95,95,95)),
+        shape = RoundedCornerShape(14.dp),
+
+
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Edit,
+            tint = Color.White,
+            contentDescription = "edit",
+            modifier = Modifier.padding(end = 16.dp)
+        )
+        Text(
+            "Edit",
+            color = Color.White,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .width(300.dp)
+                .padding(vertical = 16.dp)
+
+        )
+}
+}
+
 @Composable
 fun ImGoodNowButton(){
     Button(
@@ -396,6 +426,6 @@ fun WorkoutItem(){
 @Composable
 fun AfterSessionCardPreview() {
     GymAppTheme {
-        LongPressQueueItem()
+        LongPressEditItem()
     }
 }
