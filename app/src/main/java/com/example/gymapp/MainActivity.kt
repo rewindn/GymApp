@@ -11,6 +11,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,10 +30,12 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -41,6 +44,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -437,10 +441,40 @@ fun OnPlayInput(){
     }
 }
 
+@Composable
+fun UpperBigCard(){
+    OutlinedCard(
+        colors = CardDefaults.cardColors(Color(30,30,30)),
+        border = BorderStroke(1.dp,Color.White)
+    ) {
+        Box(
+            modifier = Modifier.size(width = 248.dp, height = 337.dp),
+            contentAlignment = Alignment.Center
+        ) {
+
+            Image(
+                painter = painterResource( R.drawable.upper_image),
+                contentDescription = "image",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(width = 367.dp, height = 348.dp)
+
+            )
+            Text(
+                "UPPER BODY",
+                fontSize = 31.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun AfterSessionCardPreview() {
     GymAppTheme {
-        OnPlayInput()
+        UpperBigCard()
     }
 }
