@@ -471,10 +471,41 @@ fun UpperBigCard(){
     }
 }
 
+
+@Composable
+fun UpperCard(){
+    OutlinedCard(
+        colors = CardDefaults.cardColors(Color(30,30,30)),
+        border = BorderStroke(1.dp,Color.White)
+    ) {
+        Box(
+            modifier = Modifier.size(width = 248.dp, height = 248.dp),
+            contentAlignment = Alignment.Center
+        ) {
+
+            Image(
+                painter = painterResource( R.drawable.upper_image),
+                contentDescription = "image",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(width = 367.dp, height = 348.dp)
+
+            )
+            Text(
+                "UPPER BODY",
+                fontSize = 31.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun AfterSessionCardPreview() {
     GymAppTheme {
-        UpperBigCard()
+        UpperCard()
     }
 }
