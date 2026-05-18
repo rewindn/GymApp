@@ -53,13 +53,16 @@ fun DoneText( modifier: Modifier = Modifier) {
         modifier = modifier
     )
 }
+
+
 @Composable
-fun NavigationButton(){
+fun NavigationButton(modifier: Modifier) {
 
     OutlinedButton(
         onClick = {},
         colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
-        border = BorderStroke(6.dp, Color.Gray)
+        border = BorderStroke(6.dp, Color.Gray),
+        modifier = modifier
 
 
 
@@ -87,6 +90,8 @@ fun NavigationButton(){
         )
     }
 }
+
+@Preview(showBackground = true)
 @Composable
 fun ProgressBar(){
     Button(
@@ -117,6 +122,8 @@ fun ProgressBar(){
         }
     }
 }
+
+@Preview(showBackground = true)
 @Composable
 fun LongPressQueueItem(){
     Button(
@@ -144,6 +151,8 @@ fun LongPressQueueItem(){
         )
     }
 }
+
+@Preview(showBackground = true)
 @Composable
 fun LongPressEditItem(){
     Button(
@@ -171,6 +180,8 @@ fun LongPressEditItem(){
         )
     }
 }
+
+@Preview(showBackground = true)
 @Composable
 fun ImGoodNowButton(){
     Button(
@@ -187,6 +198,8 @@ fun ImGoodNowButton(){
         )
     }
 }
+
+@Preview(showBackground = true)
 @Composable
 fun PlayButton(){
     Button(
@@ -204,6 +217,8 @@ fun PlayButton(){
         )
     }
 }
+
+@Preview(showBackground = true)
 @Composable
 fun StartHeader(){
     Row(
@@ -238,6 +253,7 @@ fun StartHeader(){
     }
 
 }
+
 @Preview(showBackground = true)
 @Composable
 fun BackHeader(){
@@ -276,6 +292,8 @@ fun BackHeader(){
     }
 
 }
+
+@Preview(showBackground = true)
 @Composable
 fun PlayingNowHeader(){
     Row(
@@ -312,6 +330,8 @@ fun PlayingNowHeader(){
     }
 
 }
+
+@Preview(showBackground = true)
 @Composable
 fun WorkoutQueueItem(){
     Row(
@@ -356,6 +376,8 @@ fun WorkoutQueueItem(){
     }
 
 }
+
+@Preview(showBackground = true)
 @Composable
 fun WorkoutItem(){
     Row(
@@ -399,6 +421,8 @@ fun WorkoutItem(){
     }
 
 }
+
+@Preview(showBackground = true)
 @Composable
 fun OnPlayInput(){
     MaterialTheme(darkColorScheme()) {
@@ -410,6 +434,8 @@ fun OnPlayInput(){
         )
     }
 }
+
+@Preview(showBackground = true)
 @Composable
 fun UpperBigCard(){
     OutlinedCard(
@@ -439,6 +465,8 @@ fun UpperBigCard(){
         }
     }
 }
+
+@Preview(showBackground = true)
 @Composable
 fun UpperCard(){
     OutlinedCard(
@@ -468,8 +496,10 @@ fun UpperCard(){
         }
     }
 }
+
+@Preview(showBackground = true)
 @Composable
-fun DateSquare(date: String){
+fun DateSquare(date: String = "1"){
     Text(
         date,
         color = Color.White,
@@ -483,77 +513,22 @@ fun DateSquare(date: String){
     )
 }
 
-
-
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun NavigationButtonPreview() {
-    GymAppTheme {
-        NavigationButton()
-
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AfterSessionCardiePreview() {
-    GymAppTheme {
-        DateSquare("1")
-
-    }
+fun MainApp(){
+    NavigationButton(modifier = Modifier.padding(60.dp))
+    Spacer(Modifier.size(30.dp))
+    BackHeader()
 }
 
 
 @Preview(showBackground = true)
 @Composable
-fun ProgressBarPreview() {
+fun DoneTextPreview() {
     GymAppTheme {
-        ProgressBar()
+        DoneText()
 
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun LongPressQueueItemPreview() {
-    GymAppTheme {
-        LongPressQueueItem()
 
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LongPressEditItemPreview() {
-    GymAppTheme {
-        LongPressEditItem()
-
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ImGoodNowButtonPreview() {
-    GymAppTheme {
-        ImGoodNowButton()
-
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PlayButtonPreview() {
-    GymAppTheme {
-        PlayButton()
-
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun StartHeaderPreview() {
-    GymAppTheme {
-        StartHeader()
-
-    }
-}
