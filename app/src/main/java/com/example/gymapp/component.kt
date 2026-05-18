@@ -53,8 +53,6 @@ fun DoneText( modifier: Modifier = Modifier) {
         modifier = modifier
     )
 }
-
-
 @Composable
 fun NavigationButton(){
 
@@ -146,7 +144,6 @@ fun LongPressQueueItem(){
         )
     }
 }
-
 @Composable
 fun LongPressEditItem(){
     Button(
@@ -174,7 +171,6 @@ fun LongPressEditItem(){
         )
     }
 }
-
 @Composable
 fun ImGoodNowButton(){
     Button(
@@ -191,7 +187,6 @@ fun ImGoodNowButton(){
         )
     }
 }
-
 @Composable
 fun PlayButton(){
     Button(
@@ -209,7 +204,6 @@ fun PlayButton(){
         )
     }
 }
-
 @Composable
 fun StartHeader(){
     Row(
@@ -244,7 +238,7 @@ fun StartHeader(){
     }
 
 }
-
+@Preview(showBackground = true)
 @Composable
 fun BackHeader(){
     Row(
@@ -318,7 +312,6 @@ fun PlayingNowHeader(){
     }
 
 }
-
 @Composable
 fun WorkoutQueueItem(){
     Row(
@@ -406,7 +399,6 @@ fun WorkoutItem(){
     }
 
 }
-
 @Composable
 fun OnPlayInput(){
     MaterialTheme(darkColorScheme()) {
@@ -418,7 +410,6 @@ fun OnPlayInput(){
         )
     }
 }
-
 @Composable
 fun UpperBigCard(){
     OutlinedCard(
@@ -448,8 +439,6 @@ fun UpperBigCard(){
         }
     }
 }
-
-
 @Composable
 fun UpperCard(){
     OutlinedCard(
@@ -479,7 +468,6 @@ fun UpperCard(){
         }
     }
 }
-
 @Composable
 fun DateSquare(date: String){
     Text(
@@ -495,10 +483,77 @@ fun DateSquare(date: String){
     )
 }
 
+
+
 @Preview(showBackground = true)
 @Composable
-fun AfterSessionCardPreview() {
+fun NavigationButtonPreview() {
+    GymAppTheme {
+        NavigationButton()
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AfterSessionCardiePreview() {
     GymAppTheme {
         DateSquare("1")
+
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun ProgressBarPreview() {
+    GymAppTheme {
+        ProgressBar()
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LongPressQueueItemPreview() {
+    GymAppTheme {
+        LongPressQueueItem()
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LongPressEditItemPreview() {
+    GymAppTheme {
+        LongPressEditItem()
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ImGoodNowButtonPreview() {
+    GymAppTheme {
+        ImGoodNowButton()
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PlayButtonPreview() {
+    GymAppTheme {
+        PlayButton()
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun StartHeaderPreview() {
+    GymAppTheme {
+        StartHeader()
+
     }
 }
