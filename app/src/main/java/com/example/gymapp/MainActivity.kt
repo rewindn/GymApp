@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.gymapp.ui.GymApp
 import com.example.gymapp.ui.theme.AppTheme
 import com.example.gymapp.ui.theme.GymAppTheme
 
@@ -32,7 +33,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AppTheme(darkTheme = true) {
+            GymAppTheme(darkTheme = true) {
                 Surface(
                     color = MaterialTheme.colorScheme.background
                 ) {
@@ -44,8 +45,8 @@ class MainActivity : ComponentActivity() {
                         horizontalAlignment = Alignment.CenterHorizontally
 
                     ) {
-                        MainApp()
-                        NavigationButton() }
+                        GymApp()
+                    }
 
                 }
                 }

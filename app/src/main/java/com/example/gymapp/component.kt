@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -16,20 +18,26 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,50 +52,60 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gymapp.ui.theme.GymAppTheme
 
-
+@Preview(showBackground = true)
 @Composable
-fun DoneText( modifier: Modifier = Modifier) {
+fun DoneText() {
     Text(
         text = "Done",
         fontSize = 40.sp,
-        modifier = modifier
+
     )
 }
 
-
+@Preview(showBackground = true)
 @Composable
-fun NavigationButton(modifier: Modifier) {
+fun NavigationButton() {
 
     OutlinedButton(
         onClick = {},
         colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
         border = BorderStroke(6.dp, Color.Gray),
-        modifier = modifier
+        modifier = Modifier.padding(horizontal = 53.dp).padding(bottom = 50.dp).height(66.dp)
+
+
 
 
 
     ) {
-        Icon(
-            imageVector = Icons.Outlined.Info,
-            tint = Color.White,
-            contentDescription = "Info",
-            modifier = Modifier.size(24.dp)
-        )
-        Spacer(Modifier.size(53.dp))
-        Icon(
-            imageVector = Icons.Filled.PlayArrow,
-            tint = Color.White,
-            contentDescription = "play",
-            modifier = Modifier.size(46.dp)
+        NavigationBarItem(
+            icon = {Icon(
+                imageVector = Icons.Outlined.Info,
+                tint = Color.White,
+                contentDescription = "play",
+                modifier = Modifier.size(24.dp)
 
+            )}, selected = false, onClick = {}
         )
-        Spacer(Modifier.size(53.dp))
-        Icon(
-            imageVector = Icons.Outlined.Edit,
-            tint = Color.White,
-            contentDescription = "edit",
-            modifier = Modifier.size(24.dp)
+
+        NavigationBarItem(
+            icon = {Icon(
+                imageVector = Icons.Filled.PlayArrow,
+                tint = Color.White,
+                contentDescription = "play",
+                modifier = Modifier.size(46.dp)
+
+            )}, selected = false, onClick = {}
         )
+
+        NavigationBarItem(
+            icon = { Icon(
+                imageVector = Icons.Outlined.Edit,
+                tint = Color.White,
+                contentDescription = "edit",
+                modifier = Modifier.size(24.dp)
+            )}, selected = false, onClick = {}
+        )
+
     }
 }
 
@@ -206,8 +224,7 @@ fun PlayButton(){
         onClick = {},
         colors = ButtonDefaults.buttonColors(containerColor = Color.White),
         modifier = Modifier
-            .background(Color.Black)
-            .padding(10.dp)
+            .padding(top = 96.dp, bottom = 50.dp)
     ){
         Icon(
             imageVector = Icons.Filled.PlayArrow,
@@ -218,41 +235,6 @@ fun PlayButton(){
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun StartHeader(){
-    Row(
-        modifier = Modifier
-            .background(Color.Black)
-
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-
-
-            ) {
-            Text(
-                "Start",
-                color = Color.White,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(end = 300.dp)
-
-
-            )
-            Icon(
-                imageVector = Icons.Filled.Settings,
-                tint = Color.White,
-                contentDescription = "setting",
-                modifier = Modifier.size(24.dp)
-
-            )
-        }
-
-    }
-
-}
 
 @Preview(showBackground = true)
 @Composable
@@ -422,28 +404,21 @@ fun WorkoutItem(){
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun OnPlayInput(){
-    MaterialTheme(darkColorScheme()) {
-        TextField(
-            value = "",
-            onValueChange = {},
-            label = { Text("Input Your Reps") },
-            shape = RoundedCornerShape(100),
-        )
-    }
-}
 
-@Preview(showBackground = true)
+
+
+
 @Composable
-fun UpperBigCard(){
+fun WorkoutBigCard(modifier : Modifier){
     OutlinedCard(
         colors = CardDefaults.cardColors(Color(30,30,30)),
-        border = BorderStroke(1.dp,Color.White)
+        border = BorderStroke(1.dp,Color.White),
+        shape = RoundedCornerShape(20.dp)
+
+
     ) {
         Box(
-            modifier = Modifier.size(width = 248.dp, height = 337.dp),
+            modifier = Modifier.height(337.dp),
             contentAlignment = Alignment.Center
         ) {
 
@@ -451,8 +426,7 @@ fun UpperBigCard(){
                 painter = painterResource( R.drawable.upper_image),
                 contentDescription = "image",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(width = 367.dp, height = 348.dp)
+                modifier = modifier
 
             )
             Text(
@@ -513,13 +487,7 @@ fun DateSquare(date: String = "1"){
     )
 }
 
-@Preview
-@Composable
-fun MainApp(){
-    NavigationButton(modifier = Modifier.padding(60.dp))
-    Spacer(Modifier.size(30.dp))
-    BackHeader()
-}
+
 
 
 @Preview(showBackground = true)
