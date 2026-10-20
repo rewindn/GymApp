@@ -11,6 +11,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.gymapp.DoneText
+import com.example.gymapp.NavigationButton
 import com.example.gymapp.PlayButton
 import com.example.gymapp.WorkoutBigCard
 import com.example.gymapp.core.components.TopAppBar
@@ -37,7 +39,10 @@ modifier: Modifier = Modifier
 
 
                 ){
-            TopAppBar(text = "Start", modifier = Modifier.padding(top = 45.dp, bottom = 96.dp).padding(horizontal = 23.dp) .fillMaxWidth())
+            TopAppBar(text = "Start", modifier = Modifier
+                .padding(top = 45.dp, bottom = 96.dp)
+                .padding(horizontal = 23.dp)
+                .fillMaxWidth())
             BigCardCarosel()
                 PlayButton()
 
@@ -76,11 +81,13 @@ private fun BigCardCarosel(){
 @Composable
 fun StartScreenPreview() {
     GymAppTheme(darkTheme = true) {
-        Surface(
+        Scaffold(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) { }
-        StartScreen()
+            bottomBar = { NavigationButton() }
+            ) {paddingValues ->
+            StartScreen(Modifier.padding(paddingValues))
+        }
+
 
     }
 }

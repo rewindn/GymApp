@@ -11,8 +11,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,7 +51,12 @@ fun DoneScreen(modifier: Modifier = Modifier){
             )
         EndSessionTime(title = "Upper Body", date = "February", time = "16:20 - 18:20")
         TotalActivityTime()
-        TrackButton("Finish The Session", modifier = Modifier
+        TrackButton(color = ButtonColors(
+            contentColor = MaterialTheme.colorScheme.primary,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            disabledContainerColor = MaterialTheme.colorScheme.secondary,
+            disabledContentColor = MaterialTheme.colorScheme.secondaryContainer,
+        ),"Finish The Session", modifier = Modifier
             .padding(horizontal = 42.dp)
             .height( 66.dp)
             .fillMaxWidth())

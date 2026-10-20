@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,14 +33,14 @@ fun WorkoutSetInput(valueReps : String ,valueWeight : String,modifier: Modifier 
         horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = modifier
     ){
-        TrackInput(value = valueReps,text = "Reps", modifier = Modifier.width(96.dp), setinput = { reps -> onRepsChange(reps)})
+        TrackInput(imeAction = ImeAction.Next, value = valueReps,text = "Reps", modifier = Modifier.width(96.dp), setinput = { reps -> onRepsChange(reps)})
         Text("x",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier = Modifier.width(42.dp)
         )
-        TrackInput(value = valueWeight, text = "Weight", modifier = Modifier.width( 96.dp), setinput = {weight -> onWeightChange(weight)})
+        TrackInput(imeAction = ImeAction.Done, value = valueWeight, text = "Weight", modifier = Modifier.width( 96.dp), setinput = { weight -> onWeightChange(weight)})
         Text("Kg",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,

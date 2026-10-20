@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.example.gymapp.ui.theme.GymAppTheme
 
 @Composable
-fun TrackInput(modifier: Modifier,value: String,text: String, setinput : (String) -> Unit){
+fun TrackInput(modifier: Modifier = Modifier, imeAction: ImeAction, value: String, text: String, setinput : (String) -> Unit){
 
     OutlinedTextField(
         value = value,
@@ -38,7 +38,7 @@ fun TrackInput(modifier: Modifier,value: String,text: String, setinput : (String
         } },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Next,
+            imeAction = imeAction,
             autoCorrect = false),
         singleLine = true,
 
@@ -58,7 +58,7 @@ fun TrackInput(modifier: Modifier,value: String,text: String, setinput : (String
 fun TrackInputPreview(){
     GymAppTheme(darkTheme = false) {
         Surface() {
-            TrackInput(Modifier.size(81.dp,66.dp), setinput = {}, value = "", text = "test")
+            TrackInput(Modifier.size(81.dp,66.dp), setinput = {}, value = "", imeAction = ImeAction.Done,text = "test")
         }
     }
 }

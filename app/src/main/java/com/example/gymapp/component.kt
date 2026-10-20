@@ -413,7 +413,7 @@ fun WorkoutBigCard(modifier : Modifier){
     OutlinedCard(
         colors = CardDefaults.cardColors(Color(30,30,30)),
         border = BorderStroke(1.dp,Color.White),
-        shape = RoundedCornerShape(20.dp)
+        shape = RoundedCornerShape(20.dp),
 
 
     ) {

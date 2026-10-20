@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,15 +23,18 @@ import com.example.gymapp.ui.theme.GymAppTheme
 
 
 @Composable
-fun TrackButton(title : String,modifier: Modifier = Modifier, onclick : () -> Unit = {}){
+fun TrackButton(color: ButtonColors, title : String, modifier: Modifier = Modifier, onclick : () -> Unit = {}){
     Button(
         onClick = onclick,
-        modifier = modifier
+        modifier = modifier,
+        colors = color
 
     ){
         Text(title,
             fontSize = 24.sp,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
+
+            color = MaterialTheme.colorScheme.primaryContainer
         )
     }
 }
@@ -39,7 +44,7 @@ fun TrackButton(title : String,modifier: Modifier = Modifier, onclick : () -> Un
 fun TrackButtonPreview(){
     GymAppTheme(darkTheme = true) {
         Surface {
-            TrackButton(title = "Finish The Session")
+//            TrackButton(title = "Finish The Session")
         }
     }
 }

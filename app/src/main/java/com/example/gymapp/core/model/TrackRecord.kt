@@ -1,6 +1,5 @@
 package com.example.gymapp.core.model
 
-import android.media.metrics.RecordingSession
 import java.time.Instant
 
 
@@ -11,14 +10,14 @@ data class TrackRecord(
 )
 
 data class TrackRecordWithSet(
-    val nameSet: TrackRecord?,
+    val session: TrackRecord?,
     val sets : List<TrackOnSetRecord> = emptyList<TrackOnSetRecord>()
 )
 
 data class TrackOnSetRecord(
-    val startSession: Instant = Instant.now(),
-    var weight : Int? = null,
+    val startedAt: Instant = Instant.now(),
+    var weight : Double? = null,
     var reps : Int? = null,
     val setNumber : Int? = null,
-    val endSession: Instant?
+    val endedAt: Instant?
 )
