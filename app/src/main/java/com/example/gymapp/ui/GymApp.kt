@@ -30,13 +30,14 @@ fun GymApp(){
 
             WorkoutScreen(
                 snackbarTrigger = {
-                    scope.launch {
-                        snackbarHostState.currentSnackbarData?.dismiss()
-                        snackbarHostState.showSnackbar(it)
-                    }
-                },
+
+                scope.launch {
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    snackbarHostState.showSnackbar(it)
+                }
+            },
                 modifier = Modifier.padding(padding)
-            )
+                )
 //            StartScreen(modifier = Modifier.padding(padding))
         }
     }

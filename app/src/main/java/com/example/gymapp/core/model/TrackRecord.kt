@@ -18,6 +18,6 @@ data class TrackOnSetRecord(
     val startedAt: Instant = Instant.now(),
     var weight : Double? = null,
     var reps : Int? = null,
-    val setNumber : Int? = null,
+    var setNumber : Int = 1,
     val endedAt: Instant?
 )

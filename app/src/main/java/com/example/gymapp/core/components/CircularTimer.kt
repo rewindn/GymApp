@@ -20,7 +20,7 @@ import com.example.gymapp.ui.theme.GymAppTheme
 fun CircularTimer(color: Color = Color.Cyan, timer : String, progress : Float, modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.padding(bottom = 37.dp)
+        modifier = modifier
     ) {
         CircularProgressIndicator(
             progress = { progress },

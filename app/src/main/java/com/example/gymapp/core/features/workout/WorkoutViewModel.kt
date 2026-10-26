@@ -30,8 +30,9 @@ class WorkoutViewModel : ViewModel(){
 
     var stopwatch : Job? = null
     fun setStart() {
-      _uistate.update { it.copy(sessionStart = Instant.now()) }
+      _uistate.update { it.copy(sessionStart = Instant.now(), weightInput = "", repsInput = "", progress = 1f) }
        stopwatch =  viewModelScope.launch {
+           time = 0
             while (!_uistate.value.isResting){
                 Log.d("StopWatch ", "$time")
                 _uistate.update {it.copy(timer = formatTime(time))}
@@ -58,7 +59,9 @@ class WorkoutViewModel : ViewModel(){
 
 
         override fun onFinish() {
-            _uistate.update { it.copy(isResting = false) }
+            val set = setButton()
+            _uistate.update { it.copy(titleWorkout = "Chess Press", isResting = false, labelSet = set.setNumber++, lastReps = set.reps?.toInt() , lastWeight = set.weight?.toInt() , lastTotalTime = formatInMinute( (set.endedAt?.toEpochMilli() ?: 0) - set.startedAt.toEpochMilli())) }
+            restButton()
         }
     }
 
@@ -75,8 +78,8 @@ class WorkoutViewModel : ViewModel(){
 
 
     }
-    fun setButton(){
-        val set : TrackOnSetRecord = TrackOnSetRecord(startedAt = _uistate.value.sessionStart, weight = _uistate.value.weightInput.toDouble(), reps = _uistate.value.repsInput.toInt(), endedAt = Instant.now(), setNumber =  _uistate.value.labelSet.toIntOrNull())
+    fun setButton(): TrackOnSetRecord {
+        val set : TrackOnSetRecord = TrackOnSetRecord(startedAt = _uistate.value.sessionStart, weight = _uistate.value.weightInput.toDouble(), reps = _uistate.value.repsInput.toInt(), endedAt = Instant.now(), setNumber =  _uistate.value.labelSet.toInt())
 
         val trackRecordWithSet : TrackRecordWithSet = TrackRecordWithSet(
             session = trackRecord,
@@ -84,10 +87,18 @@ class WorkoutViewModel : ViewModel(){
             )
 
         stopwatch?.cancel()
-        _uistate.update { it.copy(isResting = true, labelSet = "Last", lastReps = set.reps?.toInt() , lastWeight = set.weight?.toInt() , lastTotalTime = formatInMinute( (set.endedAt?.toEpochMilli() ?: 0) - set.startedAt.toEpochMilli())) }
+        _uistate.update { it.copy( isResting = true, labelSet = 1, lastReps = set.reps?.toInt() , lastWeight = set.weight?.toInt() , lastTotalTime = formatInMinute( (set.endedAt?.toEpochMilli() ?: 0) - set.startedAt.toEpochMilli())) }
         Log.d("Test On Set",trackRecordWithSet.toString())
 
         restStart()
+        return set
+    }
+
+    fun restButton(){
+        var set = setButton()
+        timer.cancel()
+        _uistate.update { it.copy(titleWorkout = "Chess Press", isResting = false, labelSet = set.setNumber, lastReps = set.reps?.toInt() , lastWeight = set.weight?.toInt() , lastTotalTime = formatInMinute( (set.endedAt?.toEpochMilli() ?: 0) - set.startedAt.toEpochMilli())) }
+        setStart()
     }
 
     fun formatTime(totalSeconds: Long): String {

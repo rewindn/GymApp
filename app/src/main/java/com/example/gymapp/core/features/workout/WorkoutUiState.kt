@@ -9,7 +9,7 @@ data class WorkoutUiState (
     val titleWorkout : String = "Chess Press",
     val status : String = "OnSet",
     val sessionStart: Instant = Instant.now(),
-    val labelSet : String = "1",
+    val labelSet : Int = 1,
     val lastReps : Int? = 12,
     val isResting  : Boolean = false,
     val lastWeight : Int? = 50,
