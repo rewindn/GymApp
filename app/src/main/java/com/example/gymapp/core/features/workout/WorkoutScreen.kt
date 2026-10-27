@@ -8,14 +8,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,7 +47,7 @@ import com.example.gymapp.ui.theme.GymAppTheme
 
 
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun WorkoutScreen(
     modifier: Modifier = Modifier,
@@ -65,25 +69,27 @@ fun WorkoutScreen(
             MaterialTheme.colorScheme.primary}
     )
 
-
     WorkoutScreen(
-        iskeyboardOpen = iskeyboardOpen,
-        workoutUiState = workoutUiState,
-        verticalArrangement = Arrangement.spacedBy(if (!iskeyboardOpen) 0.dp else 12.dp),
-        colorChangeCircle = colorChangeCircle,
-        colorChangeButton = colorChangeButton,
-        circleSize = if (!iskeyboardOpen) Modifier.size(269.dp) else Modifier.size(223.dp),
-        labelSet = if (workoutUiState.isResting) "LAST SET" else "SET ${workoutUiState.labelSet}",
-        labelAchivement = if (workoutUiState.isResting) { "Previous Achivement\n" } else { "Last Achivement\n" } +
-                "${workoutUiState.lastWeight}Kg : ${workoutUiState.lastReps}Reps \n" +
-                "in ${workoutUiState.lastTotalTime}",
-        labelButton =  if (workoutUiState.isResting) "Im Good Now" else "Go To Rest",
-        buttonOnClick = { if (workoutUiState.repsInput.isEmpty() || workoutUiState.repsInput.toIntOrNull() == null|| workoutUiState.weightInput.toIntOrNull() == null || workoutUiState.weightInput.isEmpty()){snackbarTrigger("Reps Dan Weight Kosong Atau Salah Format")}else{ if (workoutUiState.isResting) workoutViewModel.restButton()else workoutViewModel.setButton() } },
-        onWeightChange = workoutViewModel::setWeightInput,
-        onRepsChange =  workoutViewModel::setRepsInput,
-        modifier = modifier,
+            iskeyboardOpen = iskeyboardOpen,
+            workoutUiState = workoutUiState,
+            verticalArrangement = Arrangement.spacedBy(if (!iskeyboardOpen) 0.dp else 12.dp),
+            colorChangeCircle = colorChangeCircle,
+            colorChangeButton = colorChangeButton,
+            circleSize = if (!iskeyboardOpen) Modifier.size(269.dp) else Modifier.size(223.dp),
+            labelSet = if (workoutUiState.isResting) "LAST SET" else "SET ${workoutUiState.labelSet}",
+            labelAchivement = if (workoutUiState.isResting) { "Previous Achivement\n" } else { "Last Achivement\n" } +
+                    "${workoutUiState.lastWeight}Kg : ${workoutUiState.lastReps}Reps \n" +
+                    "in ${workoutUiState.lastTotalTime}",
+            labelButton =  if (workoutUiState.isResting) "Im Good Now" else "Go To Rest",
+            buttonOnClick = { if (workoutUiState.repsInput.isEmpty() || workoutUiState.repsInput.toIntOrNull() == null|| workoutUiState.weightInput.toIntOrNull() == null || workoutUiState.weightInput.isEmpty()){snackbarTrigger("Reps Dan Weight Kosong Atau Salah Format")}else{ if (workoutUiState.isResting) workoutViewModel.restButton()else workoutViewModel.setButton() } },
+            onWeightChange = workoutViewModel::setWeightInput,
+            onRepsChange =  workoutViewModel::setRepsInput,
+            modifier = modifier,
+        )
 
-    )
+
+
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -112,10 +118,7 @@ internal fun WorkoutScreen (
         verticalArrangement = verticalArrangement,
         modifier = modifier
     ){
-        BottomSheetDefaults.DragHandle(
-            color = Color.Gray,
 
-        )
 
 
         AnimatedVisibility(visible = !iskeyboardOpen) {

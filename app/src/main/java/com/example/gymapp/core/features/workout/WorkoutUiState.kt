@@ -1,6 +1,7 @@
 package com.example.gymapp.core.features.workout
 
 import androidx.lifecycle.ViewModel
+import com.example.gymapp.core.model.TrackOnSetRecord
 import java.time.Instant
 
 
@@ -16,6 +17,8 @@ data class WorkoutUiState (
     val progress : Float = 1f,
     val lastTotalTime : String = "1m 2sec",
     val repsInput: String = "",
-    val weightInput: String = ""
+    val weightInput: String = "",
+    val completeSets : List<TrackOnSetRecord> = emptyList()
+
 )
 

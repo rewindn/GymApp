@@ -62,52 +62,7 @@ fun DoneText() {
     )
 }
 
-@Preview(showBackground = true)
-@Composable
-fun NavigationButton() {
 
-    OutlinedButton(
-        onClick = {},
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
-        border = BorderStroke(6.dp, Color.Gray),
-        modifier = Modifier.padding(horizontal = 53.dp).padding(bottom = 50.dp).height(66.dp)
-
-
-
-
-
-    ) {
-        NavigationBarItem(
-            icon = {Icon(
-                imageVector = Icons.Outlined.Info,
-                tint = Color.White,
-                contentDescription = "play",
-                modifier = Modifier.size(24.dp)
-
-            )}, selected = false, onClick = {}
-        )
-
-        NavigationBarItem(
-            icon = {Icon(
-                imageVector = Icons.Filled.PlayArrow,
-                tint = Color.White,
-                contentDescription = "play",
-                modifier = Modifier.size(46.dp)
-
-            )}, selected = false, onClick = {}
-        )
-
-        NavigationBarItem(
-            icon = { Icon(
-                imageVector = Icons.Outlined.Edit,
-                tint = Color.White,
-                contentDescription = "edit",
-                modifier = Modifier.size(24.dp)
-            )}, selected = false, onClick = {}
-        )
-
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
@@ -217,11 +172,12 @@ fun ImGoodNowButton(){
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun PlayButton(){
+fun PlayButton(
+    onClick : () -> Unit
+){
     Button(
-        onClick = {},
+        onClick = onClick,
         colors = ButtonDefaults.buttonColors(containerColor = Color.White),
         modifier = Modifier
             .padding(top = 96.dp, bottom = 50.dp)
@@ -411,8 +367,8 @@ fun WorkoutItem(){
 @Composable
 fun WorkoutBigCard(modifier : Modifier){
     OutlinedCard(
-        colors = CardDefaults.cardColors(Color(30,30,30)),
-        border = BorderStroke(1.dp,Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary),
         shape = RoundedCornerShape(20.dp),
 
 

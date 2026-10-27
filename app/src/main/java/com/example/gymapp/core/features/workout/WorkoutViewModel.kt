@@ -15,14 +15,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.Instant
+import kotlin.math.log
 
 
 class WorkoutViewModel : ViewModel(){
     private val _uistate = MutableStateFlow(WorkoutUiState())
     val uiState : StateFlow<WorkoutUiState> = _uistate.asStateFlow()
     val trackRecord : TrackRecord = TrackRecord(endSession = null)
-    val trackOnSetRecord : TrackOnSetRecord = TrackOnSetRecord(endedAt = null)
-
 
     val totalTimer = _uistate.value.timer.toInt() / 1000
 
@@ -59,8 +58,7 @@ class WorkoutViewModel : ViewModel(){
 
 
         override fun onFinish() {
-            val set = setButton()
-            _uistate.update { it.copy(titleWorkout = "Chess Press", isResting = false, labelSet = set.setNumber++, lastReps = set.reps?.toInt() , lastWeight = set.weight?.toInt() , lastTotalTime = formatInMinute( (set.endedAt?.toEpochMilli() ?: 0) - set.startedAt.toEpochMilli())) }
+            _uistate.update { it.copy(titleWorkout = "Chess Press", isResting = false) }
             restButton()
         }
     }
@@ -68,6 +66,7 @@ class WorkoutViewModel : ViewModel(){
 
     fun setRepsInput(reps : String) {
         Log.d("Check Input", reps)
+
         _uistate.update { it.copy(repsInput = reps) }
     }
 
@@ -78,26 +77,36 @@ class WorkoutViewModel : ViewModel(){
 
 
     }
-    fun setButton(): TrackOnSetRecord {
-        val set : TrackOnSetRecord = TrackOnSetRecord(startedAt = _uistate.value.sessionStart, weight = _uistate.value.weightInput.toDouble(), reps = _uistate.value.repsInput.toInt(), endedAt = Instant.now(), setNumber =  _uistate.value.labelSet.toInt())
+    fun setButton() {
+        val weight = _uistate.value.weightInput.toDoubleOrNull() ?: 0.0
+        val reps = _uistate.value.repsInput.toIntOrNull() ?: 0
+        val trackOnSetRecord : TrackOnSetRecord = TrackOnSetRecord(startedAt = _uistate.value.sessionStart, weight = weight, reps = reps, endedAt = Instant.now(), setNumber =  _uistate.value.labelSet.toInt() )
 
-        val trackRecordWithSet : TrackRecordWithSet = TrackRecordWithSet(
-            session = trackRecord,
-            sets = listOf(set)
-            )
+
 
         stopwatch?.cancel()
-        _uistate.update { it.copy( isResting = true, labelSet = 1, lastReps = set.reps?.toInt() , lastWeight = set.weight?.toInt() , lastTotalTime = formatInMinute( (set.endedAt?.toEpochMilli() ?: 0) - set.startedAt.toEpochMilli())) }
-        Log.d("Test On Set",trackRecordWithSet.toString())
+        _uistate.update { it.copy( isResting = true, labelSet = it.labelSet + 1, lastReps = trackOnSetRecord.reps, lastWeight = trackOnSetRecord.weight?.toInt() , lastTotalTime = formatInMinute( (trackOnSetRecord.endedAt?.toEpochMilli() ?: 0) - trackOnSetRecord.startedAt.toEpochMilli()), completeSets = it.completeSets +  trackOnSetRecord ) }
+        Log.d("Test On Set",trackOnSetRecord.toString())
+
+        if (trackRecord.totalSet >= _uistate.value.labelSet) {
+            val trackRecordWithSet : TrackRecordWithSet = TrackRecordWithSet(
+                session = trackRecord,
+                sets = _uistate.value.completeSets
+
+            )
+
+
+            Log.d("hasil akhir",trackRecordWithSet.toString())
+        }
+
 
         restStart()
-        return set
+
     }
 
     fun restButton(){
-        var set = setButton()
         timer.cancel()
-        _uistate.update { it.copy(titleWorkout = "Chess Press", isResting = false, labelSet = set.setNumber, lastReps = set.reps?.toInt() , lastWeight = set.weight?.toInt() , lastTotalTime = formatInMinute( (set.endedAt?.toEpochMilli() ?: 0) - set.startedAt.toEpochMilli())) }
+        _uistate.update { it.copy(titleWorkout = "Chess Press", isResting = false) }
         setStart()
     }
 

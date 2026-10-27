@@ -19,16 +19,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.gymapp.DoneText
-import com.example.gymapp.NavigationButton
+
 import com.example.gymapp.PlayButton
 import com.example.gymapp.WorkoutBigCard
+import com.example.gymapp.core.components.NavigationButton
 import com.example.gymapp.core.components.TopAppBar
 import com.example.gymapp.ui.theme.GymAppTheme
 
 
 @Composable
 fun StartScreen(
-modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick : () -> Unit
+
 ){
 
             Column(
@@ -44,7 +47,7 @@ modifier: Modifier = Modifier
                 .padding(horizontal = 23.dp)
                 .fillMaxWidth())
             BigCardCarosel()
-                PlayButton()
+                PlayButton(onClick = onClick)
 
         }
     }
@@ -85,7 +88,7 @@ fun StartScreenPreview() {
             modifier = Modifier.fillMaxSize(),
             bottomBar = { NavigationButton() }
             ) {paddingValues ->
-            StartScreen(Modifier.padding(paddingValues))
+            StartScreen(Modifier.padding(paddingValues), onClick = {})
         }
 
 
