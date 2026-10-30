@@ -1,5 +1,7 @@
 package com.example.gymapp
 
+import android.icu.text.CaseMap
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
@@ -66,11 +69,12 @@ fun DoneText() {
 
 @Preview(showBackground = true)
 @Composable
-fun ProgressBar(){
+fun ProgressBar(onClick: () -> Unit = {}, modifier: Modifier = Modifier, title: String = "Uppedy"){
     Button(
-        onClick = {},
+        onClick = onClick,
         colors = ButtonDefaults.buttonColors(containerColor = Color(60,60,60)),
-    ) {
+        modifier = modifier
+        ) {
         Image(
             painter = painterResource(R.drawable.wo_img_upper),
             contentDescription = "Workout Image",
@@ -85,9 +89,9 @@ fun ProgressBar(){
                 fontWeight = FontWeight.Light
             )
             Text(
-                "Upper Body",
+                title,
                 color = Color.White,
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .width(300.dp)
@@ -174,13 +178,13 @@ fun ImGoodNowButton(){
 
 @Composable
 fun PlayButton(
-    onClick : () -> Unit
+    onClick : () -> Unit,
+    modifier: Modifier = Modifier
 ){
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-        modifier = Modifier
-            .padding(top = 96.dp, bottom = 50.dp)
+       modifier = modifier
     ){
         Icon(
             imageVector = Icons.Filled.PlayArrow,
@@ -363,33 +367,37 @@ fun WorkoutItem(){
 
 
 
-
+@Preview
 @Composable
-fun WorkoutBigCard(modifier : Modifier){
+fun WorkoutBigCard(modifier : Modifier = Modifier){
     OutlinedCard(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary),
         shape = RoundedCornerShape(20.dp),
-
+        modifier = modifier
 
     ) {
         Box(
-            modifier = Modifier.height(337.dp),
-            contentAlignment = Alignment.Center
+
+            contentAlignment = Alignment.Center,
         ) {
 
             Image(
                 painter = painterResource( R.drawable.upper_image),
                 contentDescription = "image",
                 contentScale = ContentScale.Crop,
-                modifier = modifier
+                modifier = Modifier
+                    .width(248.dp)
 
             )
             Text(
                 "UPPER BODY",
                 fontSize = 31.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .width(248.dp)
             )
 
         }

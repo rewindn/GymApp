@@ -30,11 +30,16 @@ import com.example.gymapp.core.components.EndSessionTime
 import com.example.gymapp.core.components.TopAppBar
 import com.example.gymapp.core.components.TotalActivityTime
 import com.example.gymapp.core.components.TrackButton
+import com.example.gymapp.core.model.TrackRecordWithSet
+
 import com.example.gymapp.ui.theme.GymAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DoneScreen(modifier: Modifier = Modifier){
+fun DoneScreen(
+    modifier: Modifier = Modifier,
+    onclick : () -> Unit
+){
     Column(
     horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxHeight()
@@ -49,14 +54,17 @@ fun DoneScreen(modifier: Modifier = Modifier){
             fontWeight = FontWeight.ExtraBold,
             modifier = Modifier.padding(bottom = 108.dp)
             )
-        EndSessionTime(title = "Upper Body", date = "February", time = "16:20 - 18:20")
+        EndSessionTime(title = "Upper Body" , date = "February", time = "16:20 - 18:20")
         TotalActivityTime()
-        TrackButton(color = ButtonColors(
-            contentColor = MaterialTheme.colorScheme.primary,
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.secondary,
-            disabledContentColor = MaterialTheme.colorScheme.secondaryContainer,
-        ),"Finish The Session", modifier = Modifier
+        TrackButton(
+            onclick = onclick ,
+            color = ButtonColors(
+                contentColor = MaterialTheme.colorScheme.secondary,
+                containerColor = Color.White,
+                disabledContainerColor = MaterialTheme.colorScheme.secondary,
+                disabledContentColor = MaterialTheme.colorScheme.secondaryContainer,
+        ),
+            title = "Finish The Session", modifier = Modifier
             .padding(horizontal = 42.dp)
             .height( 66.dp)
             .fillMaxWidth())
@@ -79,7 +87,7 @@ fun DoneScreen(modifier: Modifier = Modifier){
 fun DoneScreenPreview(){
     GymAppTheme(darkTheme = true) {
         Surface{
-            DoneScreen()
+            DoneScreen(onclick = {})
         }
     }
 }

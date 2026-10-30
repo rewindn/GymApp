@@ -33,20 +33,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            GymAppTheme(darkTheme = true) {
+            GymAppTheme(
+                darkTheme = true,
+                dynamicColor = false
+            ) {
                 Surface(
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Column( modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 14.dp)
-                        .fillMaxHeight(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
 
-                    ) {
+                ) {
+
                         GymApp()
-                    }
+
 
                 }
                 }
