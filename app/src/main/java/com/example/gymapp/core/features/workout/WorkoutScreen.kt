@@ -71,6 +71,7 @@ enum class WorkoutStatus{
 @Composable
 fun WorkoutScreen(
     workoutViewModel: WorkoutViewModel = viewModel(),
+
     snackbarTrigger: (String) -> Unit,
     doneClick : () -> Unit
 
@@ -126,6 +127,7 @@ fun WorkoutScreen(
         when(step){
             WorkoutStatus.PROGRESS -> {
                 WorkoutContent(
+                    onExitTopBar = {workoutViewModel.setData(isDone = true)},
                     snackbarTrigger = snackbarTrigger,
                     workoutUiState = workoutUiState,
                     workoutViewModel = workoutViewModel,
@@ -153,6 +155,7 @@ fun WorkoutScreen(
 fun WorkoutContent(
     modifier: Modifier = Modifier,
     onClickList: () -> Unit,
+    onExitTopBar: () -> Unit,
     workoutUiState : WorkoutUiState,
     workoutViewModel: WorkoutViewModel,
     snackbarTrigger: (String) -> Unit = {}
@@ -171,6 +174,7 @@ fun WorkoutContent(
             MaterialTheme.colorScheme.primary}
     )
     WorkoutContent(
+        onExitTopBar = onExitTopBar,
         onClickList = onClickList,
         iskeyboardOpen = iskeyboardOpen,
         workoutUiState = workoutUiState,
@@ -200,6 +204,7 @@ fun WorkoutContent(
 internal fun WorkoutContent (
 
     modifier: Modifier = Modifier,
+    onExitTopBar: () -> Unit,
     iskeyboardOpen: Boolean,
     verticalArrangement: Arrangement.Vertical,
     colorChangeButton: Color,
@@ -233,7 +238,7 @@ internal fun WorkoutContent (
         }
 
         AnimatedVisibility(visible = !iskeyboardOpen) {
-            TopAppBar(label = "Playing Now", text = workoutUiState.titleWorkout, modifier =  Modifier
+            TopAppBar(label = "Playing Now", text = workoutUiState.titleWorkout, onExitClick = onExitTopBar  ,modifier =  Modifier
                 .padding(bottom = 48.dp)
                 .padding(horizontal = 23.dp)
                 .fillMaxWidth())
@@ -309,7 +314,7 @@ fun WorkoutScreenPreview(){
         dynamicColor = false
     ) {
         Surface {
-            WorkoutScreen(snackbarTrigger = {}, doneClick = {}, workoutViewModel = viewModel())
+            WorkoutScreen(snackbarTrigger = {}, doneClick = {} ,workoutViewModel = viewModel())
         }
     }
 }

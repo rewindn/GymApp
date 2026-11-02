@@ -25,7 +25,13 @@ data class WorkoutUiState (
     val trackStartedAt : Instant = Instant.now(),
     val completeSets : List<TrackOnSetRecord> = emptyList(),
     val completeTrackList: List<TrackRecordWithSet> = emptyList<TrackRecordWithSet>(),
-    val workoutPlan : WorkoutPlan,
+    val workoutPlan : WorkoutPlan = WorkoutPlan(
+        nameWorkout = "Upper Body",
+        startSession = Instant.now(),
+        restTime = "90s",
+        endSession = null,
+        trackList = emptyList()
+    ),
 
     )
 

@@ -1,11 +1,11 @@
 package com.example.gymapp.core.model
 
+import java.sql.Date
 import java.time.Instant
 
-data class WorkoutSession(
-    val workoutList : List<WorkoutPlan>,
-    )
+
 data class WorkoutPlan(
+    val restTime : String,
     val startSession: Instant = Instant.now(),
     val nameWorkout : String = "Upper Body",
     val trackList : List<TrackRecordWithSet> = emptyList(),
@@ -15,7 +15,7 @@ data class WorkoutPlan(
 
 data class TrackRecordWithSet(
     val session: TrackPlan,
-    val sets : List<TrackOnSetRecord>? = emptyList<TrackOnSetRecord>()
+    val sets : List<TrackOnSetRecord> = emptyList<TrackOnSetRecord>()
 )
 data class TrackPlan(
     val startSession: Instant = Instant.now(),

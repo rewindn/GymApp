@@ -48,7 +48,7 @@ fun DoneScreen(
             color = Color.Gray,
             modifier = Modifier.padding(top = 28.dp)
         )
-        TopAppBar(icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft, modifier = Modifier.fillMaxWidth().padding(horizontal = 23.dp).padding(bottom = 108.dp))
+        TopAppBar(icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft, onExitClick = onclick ,modifier = Modifier.fillMaxWidth().padding(horizontal = 23.dp).padding(bottom = 108.dp))
         Text("Done",
             fontSize = 40.sp,
             fontWeight = FontWeight.ExtraBold,

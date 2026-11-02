@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Info
@@ -45,7 +46,7 @@ fun NavigationButton() {
 
         NavigationBarItem(
             icon = {Icon(
-                imageVector = Icons.Filled.PlayArrow,
+                imageVector = Icons.Filled.Home,
 
                 contentDescription = "play",
                 modifier = Modifier.size(46.dp)
