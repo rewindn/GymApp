@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,8 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +49,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -53,6 +57,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gymapp.core.database.model.WorkoutWithExercises
+import com.example.gymapp.core.model.WorkoutPlan
 import com.example.gymapp.ui.theme.GymAppTheme
 
 @Preview(showBackground = true)
@@ -65,7 +71,57 @@ fun DoneText() {
     )
 }
 
+@Composable
+fun WorkoutBigCard2(
+    plan: WorkoutPlan,
+    colors: CardColors,
+    border: BorderStroke,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        colors = colors,
+        border = border,
+        modifier = modifier
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column {
+                Text(
+                    text = plan.nameWorkout,
+                    style = MaterialTheme.typography.headlineMedium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "${plan.trackList.size} Variasi Gerakan • Istirahat ${plan.restTime}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
 
+            Column {
+                Text(
+                    text = "Daftar Latihan:",
+                    style = MaterialTheme.typography.labelLarge
+                )
+                plan.trackList.take(3).forEach { track ->
+                    Text(
+                        text = "• ${track.session.nameSet}",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                if (plan.trackList.size > 3) {
+                    Text(
+                        text = "+${plan.trackList.size - 3} latihan lainnya",
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                }
+            }
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -75,27 +131,32 @@ fun ProgressBar(onClick: () -> Unit = {}, modifier: Modifier = Modifier, title: 
         colors = ButtonDefaults.buttonColors(containerColor = Color(60,60,60)),
         modifier = modifier
         ) {
-        Image(
-            painter = painterResource(R.drawable.wo_img_upper),
-            contentDescription = "Workout Image",
-            modifier = Modifier
-                .size(54.dp)
-                .padding(end = 16.dp)
-        )
-        Column {
-            Text("Playing Now",
-                color = Color.White,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Light
-            )
-            Text(
-                title,
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Image(
+                painter = painterResource(R.drawable.wo_img_upper),
+                contentDescription = "Workout Image",
                 modifier = Modifier
-                    .width(300.dp)
+                    .size(54.dp)
+                    .padding(end = 16.dp)
             )
+            Column {
+                Text("Playing Now",
+                    color = Color.White,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Light
+                )
+                Text(
+                    title,
+                    color = Color.White,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+
+                )
+            }
         }
     }
 }
@@ -367,14 +428,22 @@ fun WorkoutItem(){
 
 
 
-@Preview
+
 @Composable
-fun WorkoutBigCard(modifier : Modifier = Modifier){
+fun WorkoutBigCard(
+    workout: WorkoutPlan,
+    modifier : Modifier = Modifier,
+    colors : CardColors,
+    border : BorderStroke,
+    image : Painter
+){
+
     OutlinedCard(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary),
+        colors = colors,
+        border = border,
         shape = RoundedCornerShape(20.dp),
-        modifier = modifier
+        modifier = modifier,
+
 
     ) {
         Box(
@@ -383,7 +452,7 @@ fun WorkoutBigCard(modifier : Modifier = Modifier){
         ) {
 
             Image(
-                painter = painterResource( R.drawable.upper_image),
+                painter = image,
                 contentDescription = "image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -391,7 +460,7 @@ fun WorkoutBigCard(modifier : Modifier = Modifier){
 
             )
             Text(
-                "UPPER BODY",
+                workout.nameWorkout.uppercase(),
                 fontSize = 31.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,

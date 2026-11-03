@@ -112,8 +112,7 @@ fun WorkoutScreen(
                        targetOffsetY = { fullHeight -> fullHeight },
                        animationSpec = tween(durationMillis = 300)
                    )).apply {
-                       // KUNCI PERBAIKAN: Beri -1f agar PROGRESS diam di bawah dan LIST meluncur di atasnya
-                       targetContentZIndex = -1f
+                      targetContentZIndex = -1f
                    }
                }
 
@@ -137,7 +136,13 @@ fun WorkoutScreen(
             }
 
             WorkoutStatus.DONE -> {
-                DoneScreen(onclick =   doneClick )
+                DoneScreen(
+                    title = workoutUiState.workoutPlan.nameWorkout,
+                    date = workoutUiState.formattedDate,
+                    timeRange = workoutUiState.formattedTimeRange,
+                    totalDuration = workoutUiState.formattedTotalDuration,
+                    onclick = doneClick
+                )
             }
             WorkoutStatus.LIST -> {
                 WorkoutSheet(onClick = {currentStep = WorkoutStatus.PROGRESS})

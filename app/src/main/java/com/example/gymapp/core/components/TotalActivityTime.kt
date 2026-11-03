@@ -14,9 +14,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gymapp.ui.theme.GymAppTheme
+import java.sql.Time
 
 @Composable
-fun TotalActivityTime(){
+fun TotalActivityTime(
+    totalTime: String
+){
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Absolute.SpaceBetween,
@@ -26,7 +29,7 @@ fun TotalActivityTime(){
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
             )
-        Text("1h 20m",
+        Text(totalTime,
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold
         )
@@ -38,7 +41,7 @@ fun TotalActivityTime(){
 fun TotalActivityTimePreview(){
     GymAppTheme(darkTheme = true) {
         Surface {
-            TotalActivityTime()
+            TotalActivityTime("1m 20s")
         }
     }
 }

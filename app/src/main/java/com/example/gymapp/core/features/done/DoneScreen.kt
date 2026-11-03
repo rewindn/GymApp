@@ -26,68 +26,95 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gymapp.core.components.EndSessionTime
-
 import com.example.gymapp.core.components.TopAppBar
 import com.example.gymapp.core.components.TotalActivityTime
 import com.example.gymapp.core.components.TrackButton
-import com.example.gymapp.core.model.TrackRecordWithSet
-
 import com.example.gymapp.ui.theme.GymAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DoneScreen(
     modifier: Modifier = Modifier,
-    onclick : () -> Unit
-){
+    title: String = "Upper Body",
+    date: String = "February",
+    timeRange: String = "16:20 - 18:20",
+    totalDuration: String = "02h 00m",
+    onclick: () -> Unit
+) {
     Column(
-    horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxHeight()
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxHeight()
     ) {
         BottomSheetDefaults.DragHandle(
             color = Color.Gray,
             modifier = Modifier.padding(top = 28.dp)
         )
-        TopAppBar(icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft, onExitClick = onclick ,modifier = Modifier.fillMaxWidth().padding(horizontal = 23.dp).padding(bottom = 108.dp))
-        Text("Done",
+
+        TopAppBar(
+            icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+            onExitClick = onclick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 23.dp)
+                .padding(bottom = 108.dp)
+        )
+
+        Text(
+            text = "Done",
             fontSize = 40.sp,
             fontWeight = FontWeight.ExtraBold,
             modifier = Modifier.padding(bottom = 108.dp)
-            )
-        EndSessionTime(title = "Upper Body" , date = "February", time = "16:20 - 18:20")
-        TotalActivityTime()
+        )
+
+
+        EndSessionTime(
+            title = title,
+            date = date,
+            time = timeRange
+        )
+
+    TotalActivityTime(totalDuration)
+
         TrackButton(
-            onclick = onclick ,
+            onclick = onclick,
             color = ButtonColors(
                 contentColor = MaterialTheme.colorScheme.secondary,
                 containerColor = Color.White,
                 disabledContainerColor = MaterialTheme.colorScheme.secondary,
                 disabledContentColor = MaterialTheme.colorScheme.secondaryContainer,
-        ),
-            title = "Finish The Session", modifier = Modifier
-            .padding(horizontal = 42.dp)
-            .height( 66.dp)
-            .fillMaxWidth())
+            ),
+            title = "Finish The Session",
+            modifier = Modifier
+                .padding(horizontal = 42.dp)
+                .height(66.dp)
+                .fillMaxWidth()
+        )
+
         Spacer(modifier = Modifier.weight(1f))
 
         Icon(
             imageVector = Icons.Filled.Menu,
             tint = Color.White,
             contentDescription = "setting",
-            modifier = Modifier.size(24.dp))
+            modifier = Modifier.size(24.dp)
+        )
 
-        Spacer(modifier = Modifier.height( 28.dp))
-
+        Spacer(modifier = Modifier.height(28.dp))
     }
 }
 
-
 @Preview
 @Composable
-fun DoneScreenPreview(){
+fun DoneScreenPreview() {
     GymAppTheme(darkTheme = true) {
-        Surface{
-            DoneScreen(onclick = {})
+        Surface {
+            DoneScreen(
+                title = "Push Day",
+                date = "Desember 2026",
+                timeRange = "08:00 - 09:30",
+                totalDuration = "01h 30m",
+                onclick = {}
+            )
         }
     }
 }

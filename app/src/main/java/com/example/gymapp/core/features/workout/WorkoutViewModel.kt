@@ -2,12 +2,15 @@ package com.example.gymapp.core.features.workout
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gymapp.core.database.AppDatabase
 import com.example.gymapp.core.database.WorkoutRepository
 import com.example.gymapp.core.model.TrackOnSetRecord
-import com.example.gymapp.core.model.TrackPlan
 import com.example.gymapp.core.model.TrackRecordWithSet
 import com.example.gymapp.core.model.WorkoutPlan
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +26,7 @@ import java.time.Instant
 class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database = AppDatabase.getDatabase(application)
-    private val repository = WorkoutRepository(database.workoutDao(), application)
+    private val repository = WorkoutRepository(database.workoutDao(), application, database)
 
     private val _uistate = MutableStateFlow(WorkoutUiState())
     val uiState: StateFlow<WorkoutUiState> = _uistate.asStateFlow()
@@ -32,12 +35,38 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private var restTimerJob: Job? = null
     private var elapsedSeconds = 0L
 
+    fun removeTrackItem(index: Int) {
+        _uistate.update { state ->
+            if (index !in state.activeTrackList.indices) return@update state
+
+            val updatedQueue = state.activeTrackList.filterIndexed { i, _ -> i != index }
+            val newIndex = when {
+                index < state.indexWorkout -> (state.indexWorkout - 1).coerceAtLeast(0)
+                else -> state.indexWorkout
+            }
+            val currentExerciseName = updatedQueue.getOrNull(newIndex)?.session?.nameSet ?: state.titleWorkout
+
+            state.copy(
+                activeTrackList = updatedQueue,
+                workoutPlan = state.workoutPlan.copy(trackList = updatedQueue), // Sinkronkan ke UI lama
+                indexWorkout = newIndex,
+                titleWorkout = if (state.isResting) state.titleWorkout else currentExerciseName
+            )
+        }
+    }
+
+    fun zeroTrackSets(index: Int) {
+        removeTrackItem(index)
+    }
+
     fun setStart(selectedPlan: WorkoutPlan) {
         val firstExerciseName = selectedPlan.trackList.firstOrNull()?.session?.nameSet ?: selectedPlan.nameWorkout
 
         _uistate.update {
             it.copy(
+                masterPlan = selectedPlan,
                 workoutPlan = selectedPlan,
+                activeTrackList = selectedPlan.trackList,
                 titleWorkout = firstExerciseName,
                 sessionStart = Instant.now(),
                 sessionStartedAt = Instant.now(),
@@ -53,6 +82,33 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             )
         }
         startExerciseStopwatch()
+    }
+
+    fun reorderTrackList(fromIndex: Int, toIndex: Int) {
+        _uistate.update { state ->
+            val list = state.activeTrackList
+            if (fromIndex !in list.indices || toIndex !in list.indices) return@update state
+
+            val updatedList = list.toMutableList().apply {
+                add(toIndex, removeAt(fromIndex))
+            }
+
+            val newIndex = when {
+                state.indexWorkout == fromIndex -> toIndex
+                fromIndex < state.indexWorkout && toIndex >= state.indexWorkout -> state.indexWorkout - 1
+                fromIndex > state.indexWorkout && toIndex <= state.indexWorkout -> state.indexWorkout + 1
+                else -> state.indexWorkout
+            }
+
+            val activeExerciseName = updatedList.getOrNull(newIndex)?.session?.nameSet ?: state.titleWorkout
+
+            state.copy(
+                activeTrackList = updatedList,
+                workoutPlan = state.workoutPlan.copy(trackList = updatedList),
+                indexWorkout = newIndex,
+                titleWorkout = if (state.isResting) state.titleWorkout else activeExerciseName
+            )
+        }
     }
 
     private fun startExerciseStopwatch() {
@@ -85,7 +141,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         stopwatchJob?.cancel()
 
         val updatedSets = currentState.completeSets + newSet
-        val currentTrack = currentState.workoutPlan.trackList.getOrNull(currentState.indexWorkout)
+        val currentTrack = currentState.activeTrackList.getOrNull(currentState.indexWorkout)
         val targetTotalSets = currentTrack?.session?.totalSet ?: 3
 
         _uistate.update {
@@ -101,72 +157,93 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             )
         }
 
-        // Cek transisi pergerakan track atau penyelesaian sesi
-        if (updatedSets.size >= targetTotalSets) {
-            val isLastExercise = currentState.indexWorkout + 1 >= currentState.workoutPlan.trackList.size
+      if (updatedSets.size >= targetTotalSets) {
+            val isLastExercise = currentState.indexWorkout + 1 >= currentState.activeTrackList.size
             if (isLastExercise) {
                 setData(isDone = true)
                 return
             } else {
                 setData(isDone = false)
+                startRestTimer()
+                return
             }
         }
 
         startRestTimer()
     }
 
-    // FUNGSI INI YANG DIPANGGIL OLEH WorkoutScreen (onExitTopBar & setButton)
     fun setData(isDone: Boolean = false) {
         val currentState = _uistate.value
-        val currentTrack = currentState.workoutPlan.trackList.getOrNull(currentState.indexWorkout)
-
-        // Bungkus track yang baru saja tuntas (jika ada set di dalamnya)
-        val finishedTrackRecord = if (currentTrack != null && currentState.completeSets.isNotEmpty()) {
-            TrackRecordWithSet(
-                session = currentTrack.session.copy(
-                    startSession = currentState.trackStartedAt,
-                    endSession = Instant.now()
-                ),
-                sets = currentState.completeSets
-            )
-        } else null
-
-        val updatedTrackList = if (finishedTrackRecord != null) {
-            currentState.completeTrackList + finishedTrackRecord
-        } else {
-            currentState.completeTrackList
-        }
+        val currentTrack = currentState.activeTrackList.getOrNull(currentState.indexWorkout)
 
         if (isDone) {
             stopwatchJob?.cancel()
             restTimerJob?.cancel()
 
-            val completeWorkout = currentState.workoutPlan.copy(
+            val completedTracks = currentState.completeTrackList.toMutableList()
+
+            if (currentTrack != null && currentState.completeSets.isNotEmpty()) {
+                completedTracks.add(
+                    TrackRecordWithSet(
+                        session = currentTrack.session.copy(
+                            startSession = currentState.trackStartedAt,
+                            endSession = Instant.now()
+                        ),
+                        sets = currentState.completeSets
+                    )
+                )
+            }
+
+            val completedMap = completedTracks.associateBy { it.session.nameSet }
+            val persistentTrackList = currentState.masterPlan.trackList.map { templateItem ->
+                completedMap[templateItem.session.nameSet] ?: templateItem.copy(sets = emptyList())
+            }
+
+            val finalWorkoutPlan = currentState.masterPlan.copy(
                 startSession = currentState.sessionStartedAt,
                 endSession = Instant.now(),
-                trackList = updatedTrackList
+                trackList = persistentTrackList
             )
 
-            _uistate.update {
+           _uistate.update {
                 it.copy(
-                    workoutPlan = completeWorkout,
-                    completeTrackList = updatedTrackList,
+                    masterPlan = finalWorkoutPlan,
+                    workoutPlan = finalWorkoutPlan,
+                    completeTrackList = persistentTrackList,
+                    isResting = false,
                     isDone = true
                 )
             }
 
-            Log.d("WorkoutViewModel", "Hasil akhir tersimpan: $completeWorkout")
+            Log.d("WorkoutViewModel", "Workout selesai disimpan: ${persistentTrackList.size} gerakan master aman.")
             viewModelScope.launch(Dispatchers.IO) {
-                repository.saveWorkoutPlan(completeWorkout)
+                repository.saveWorkoutPlan(finalWorkoutPlan)
             }
         } else {
+            val finishedTrackRecord = if (currentTrack != null && currentState.completeSets.isNotEmpty()) {
+                TrackRecordWithSet(
+                    session = currentTrack.session.copy(
+                        startSession = currentState.trackStartedAt,
+                        endSession = Instant.now()
+                    ),
+                    sets = currentState.completeSets
+                )
+            } else null
+
+            val updatedTrackList = if (finishedTrackRecord != null) {
+                currentState.completeTrackList + finishedTrackRecord
+            } else {
+                currentState.completeTrackList
+            }
+
             val nextIndex = currentState.indexWorkout + 1
-            val nextExerciseName = currentState.workoutPlan.trackList.getOrNull(nextIndex)?.session?.nameSet ?: "Workout"
+            val nextExerciseName = currentState.activeTrackList.getOrNull(nextIndex)?.session?.nameSet ?: "Workout"
 
             _uistate.update {
                 it.copy(
                     completeSets = emptyList(),
                     completeTrackList = updatedTrackList,
+                    workoutPlan = it.workoutPlan.copy(trackList = it.activeTrackList),
                     indexWorkout = nextIndex,
                     labelSet = 1,
                     trackStartedAt = Instant.now(),
@@ -178,7 +255,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     private fun startRestTimer() {
         restTimerJob?.cancel()
-        val restTimeSeconds = parseRestTimeToSeconds(_uistate.value.workoutPlan.restTime)
+        val restTimeSeconds = parseRestTimeToSeconds(_uistate.value.masterPlan.restTime)
 
         _uistate.update { it.copy(titleWorkout = "Rest", progress = 1f) }
 
@@ -198,6 +275,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun restButton() {
+        _uistate.update { it.copy(weightInput = "", repsInput = "") }
         restTimerJob?.cancel()
         onFinishRest()
     }
@@ -206,7 +284,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         val currentState = _uistate.value
         if (currentState.isDone) return
 
-        val currentExerciseName = currentState.workoutPlan.trackList
+        val currentExerciseName = currentState.activeTrackList
             .getOrNull(currentState.indexWorkout)?.session?.nameSet ?: "Workout"
 
         _uistate.update {

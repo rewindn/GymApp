@@ -1,6 +1,7 @@
 package com.example.gymapp.core.database
 
 import android.content.Context
+import androidx.room.withTransaction
 import com.example.gymapp.core.database.entity.ExerciseEntity
 import com.example.gymapp.core.database.entity.SetRecordEntity
 import com.example.gymapp.core.database.entity.WorkoutEntity
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class WorkoutRepository(private val workoutDao: WorkoutDao,context: Context) {
+class WorkoutRepository(private val workoutDao: WorkoutDao,context: Context,private val database: AppDatabase,) {
 
 
     val allWorkouts: Flow<List<WorkoutPlan>> = workoutDao.getAllWorkoutsWithExercises()
@@ -49,46 +50,46 @@ class WorkoutRepository(private val workoutDao: WorkoutDao,context: Context) {
         }
     private val seeder = GymDataSeeder(context)
 
-    suspend fun seedDatabaseIfEmpty() = withContext(Dispatchers.IO) {
 
+
+    suspend fun seedDatabaseIfEmpty() = withContext(Dispatchers.IO) {
         if (workoutDao.getWorkoutCount() == 0) {
             val seedList = seeder.loadSeedWorkouts()
 
-            seedList.forEach { workoutJson ->
-
-                val workoutId = workoutDao.insertWorkout(
-                    WorkoutEntity(
-                        nameWorkout = workoutJson.nameWorkout,
-                        startSession = workoutJson.startSession,
-                        endSession = workoutJson.endSession,
-                        restTime = workoutJson.restTime
-                    )
-                )
-
-
-                workoutJson.trackList.forEach { track ->
-                    val exerciseId = workoutDao.insertExercise(
-                        ExerciseEntity(
-                            workoutId = workoutId,
-                            nameSet = track.session.nameSet,
-                            totalSet = track.session.totalSet,
-                            startSession = track.session.startSession,
-                            endSession = track.session.endSession
+           database.withTransaction {
+                seedList.forEach { workoutJson ->
+                    val workoutId = workoutDao.insertWorkout(
+                        WorkoutEntity(
+                            nameWorkout = workoutJson.nameWorkout,
+                            startSession = workoutJson.startSession,
+                            endSession = workoutJson.endSession,
+                            restTime = workoutJson.restTime
                         )
                     )
 
-
-                    val setEntities = track.sets.map { setJson ->
-                        SetRecordEntity(
-                            exerciseId = exerciseId,
-                            setNumber = setJson.setNumber,
-                            weight = setJson.weight,
-                            reps = setJson.reps,
-                            startedAt = setJson.startedAt,
-                            endedAt = setJson.endedAt
+                    workoutJson.trackList.forEach { track ->
+                        val exerciseId = workoutDao.insertExercise(
+                            ExerciseEntity(
+                                workoutId = workoutId,
+                                nameSet = track.session.nameSet,
+                                totalSet = track.session.totalSet,
+                                startSession = track.session.startSession,
+                                endSession = track.session.endSession
+                            )
                         )
+
+                        val setEntities = track.sets.map { setJson ->
+                            SetRecordEntity(
+                                exerciseId = exerciseId,
+                                setNumber = setJson.setNumber,
+                                weight = setJson.weight,
+                                reps = setJson.reps,
+                                startedAt = setJson.startedAt,
+                                endedAt = setJson.endedAt
+                            )
+                        }
+                        workoutDao.insertSets(setEntities)
                     }
-                    workoutDao.insertSets(setEntities)
                 }
             }
         }
@@ -115,8 +116,7 @@ class WorkoutRepository(private val workoutDao: WorkoutDao,context: Context) {
                 )
             )
 
-            // 3. Simpan seluruh set untuk latihan ini
-            val setEntities = trackRecord.sets?.map { setRecord ->
+          val setEntities = trackRecord.sets?.map { setRecord ->
                 SetRecordEntity(
                     exerciseId = exerciseId,
                     setNumber = setRecord.setNumber,

@@ -25,7 +25,7 @@ fun EndSessionTime(title: String,date: String,time: String){
         )
         Text(
             "$date $time",
-            fontSize = 24.sp,
+            fontSize = 20.sp,
             fontWeight = FontWeight.Light
         )
     }
